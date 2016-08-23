@@ -1,0 +1,129 @@
+<div class="description" id="wrapper">
+
+	<div class="header">
+		<div class="logo">
+			<img width=65px src="static/images/logo.png" />
+		</div>
+		<div class="heading-text">
+			<h2>Newrelic Notification Configuration</h2>
+			Follow this <a href="{{learn_more_url}}">link</a> and configure your github webhooks.
+			<p><b>Newrelic Webhook Url - </b> {{settings.webhook_url}}</p>
+		</div>
+	</div>
+
+	<div class="config-table">
+		<p style="font-size: 17px;">Notify the room for these alerts:</p>
+		<hr>
+		<div class="aui-group">
+           	<div class="aui-item">
+				<span class="alert-type">Web app alert policy</span>
+				<ul class="notification-list">
+					<li><input type="checkbox" class="notification-item" value="" checked=""><label>Web app alert policy opened</label></li>
+					<li><input type="checkbox" class="notification-item" value="lists_updated" checked=""><label>Web app alert policy closed</label></li>
+                    <li><input type="checkbox" class="notification-item" value="lists_moved" checked=""><label>Web app incident and Apdex problem opened</label></li>
+                    <li><input type="checkbox" class="notification-item" value="lists_moved" checked=""><label>Incident escalated to downtime</label></li>
+                    <li><input type="checkbox" class="notification-item" value="lists_moved" checked=""><label>Incident acknowledged</label></li>
+                    <li><input type="checkbox" class="notification-item" value="lists_moved" checked=""><label>Apdex problem closed</label></li>
+                    <li><input type="checkbox" class="notification-item" value="lists_moved" checked=""><label>Downtime problem closed</label></li>
+                    <li><input type="checkbox" class="notification-item" value="lists_moved" checked=""><label>All alerts closed for this incident</label></li>
+                    <li><input type="checkbox" class="notification-item" value="lists_moved" checked=""><label>Incident disabled or canceled</label></li>
+				</ul>
+           	</div>
+           	<div class="aui-item">
+           		<span class="alert-type">Server alert policy</span>
+				<ul class="notification-list">
+					<li><input type="checkbox" class="notification-item" value="cards_created" checked=""><label>Server alert policy opened</label></li>
+                    <li><input type="checkbox" class="notification-item" value="cards_deleted" checked=""><label>Server alert policy closed</label></li>
+                    <li><input type="checkbox" class="notification-item" value="cards_moved" checked=""><label>Server incident and CPU problem opened</label></li>
+                    <li><input type="checkbox" class="notification-item" value="cards_moved" checked=""><label>Incident escalated after 5 minutes</label></li>
+                    <li><input type="checkbox" class="notification-item" value="cards_moved" checked=""><label>Incident acknowledged</label></li>
+                    <li><input type="checkbox" class="notification-item" value="cards_moved" checked=""><label>Server downtime ends</label></li>
+                    <li><input type="checkbox" class="notification-item" value="cards_moved" checked=""><label>CPU problem closed</label></li>
+                    <li><input type="checkbox" class="notification-item" value="cards_moved" checked=""><label>All alerts closed for this incident</label></li>
+                    <li><input type="checkbox" class="notification-item" value="cards_moved" checked=""><label>Incident disabled or canceled</label></li>
+				</ul>
+			</div>
+			<div class="aui-item">
+           		<span class="alert-type">Key transaction alert</span>
+				<ul class="notification-list">
+					<li><input type="checkbox" class="notification-item" value="cards_created" checked=""><label>Key transaction alert policy opened</label></li>
+                    <li><input type="checkbox" class="notification-item" value="cards_deleted" checked=""><label>Key transaction alert policy closed</label></li>
+                    <li><input type="checkbox" class="notification-item" value="cards_moved" checked=""><label>Incident and error rate problem opened</label></li>
+                    <li><input type="checkbox" class="notification-item" value="cards_deleted" checked=""><label>Incident acknowledged</label></li>
+                    <li><input type="checkbox" class="notification-item" value="cards_deleted" checked=""><label>Error rate problem closed</label></li>
+                    <li><input type="checkbox" class="notification-item" value="cards_deleted" checked=""><label>All alerts closed for this incident</label></li>
+                    <li><input type="checkbox" class="notification-item" value="cards_deleted" checked=""><label>Incident disabled or canceled</label></li>
+				</ul>
+			</div>
+		</div>
+		<div class="save-config">
+			<button class="aui-button aui-button-primary submit-config">Save</button>
+		</div>
+	</div>
+</div>
+
+    <script data-options="resize: false" src="//www.hipchat.com//atlassian-connect/all.js"></script>    
+    <script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/require.js/2.1.15/require.min.js"></script>
+    <script src="//aui-cdn.atlassian.com/aui-adg/5.8.4/js/aui.js"></script>
+    <script src="//aui-cdn.atlassian.com/aui-adg/5.8.4/js/aui-experimental.js"></script>
+
+    <!--[if lt IE 9]><script src="//cdnjs.cloudflare.com/ajax/libs/aui/5.2/js/aui-ie.js"></script><![endif]-->
+    <script type="text/javascript">
+    (function($) {
+        
+        function showSuccessMessage(message){
+        	AJS.messages.success({
+                title: "Success!",
+                body: message
+            });
+        	HipChat.resize();
+        };
+        
+        function showErrorMessage(head, message){
+            AJS.messages.error({
+                title: head,
+                body: message
+            });
+            HipChat.resize();
+        };
+        
+        function showWarningMessage(head, message){
+            AJS.messages.warning({
+                title: head,
+                body: message
+            });
+            HipChat.resize();
+        };
+        
+        function hideErrorMessage() {
+            $("#aui-message-bar").find(".icon-close").click();
+        };
+        
+    	function getResponse(method, url, data){
+    	    hideErrorMessage();
+    		return $.ajax({type: method, url: url, data: data})
+    	};
+    	
+        function showSpinner(){
+            $(".waiting-signin").css('z-index', '2');
+        }
+
+        function hideSpinner(){
+            $(".waiting-signin").css('z-index', '-1');
+        }
+        
+        
+        
+        function setErrorMessage(data){
+			message = ("" + data.responseText).replace(/\"/g,'').replace(/\'/g,'')
+        	if (data.status == 401){
+				message = 'Access Revoked. Please re-authorize this integration. <a class="re-auth-link" href = "#" onClick = "window.location.reload(true);">Re-Authenticate</a>.'
+			}
+			showErrorMessage("There was an error connecting with Trello!", "<p>" + message + "</p>");
+        }
+        
+        hideSpinner();
+        
+    })(AJS.$);
+    </script>

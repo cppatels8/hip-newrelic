@@ -1,0 +1,1 @@
+HIPNEWRELIC_BASE_URL=https://6c6ec3ce.ngrok.io HIPNEWRELIC_ADDON_KEY=com.atlassian.hipchat.hipnewrelic HIPNEWRELIC_ADDON_NAME=HIPNEWRELIC HIPNEWRELIC_USERNAME=admin HIPNEWRELIC_PASSWORD=admin python application.py
